@@ -7,6 +7,9 @@ const Model = use('Model')
 const Hash = use('Hash')
 
 class User extends Model {
+  static get table(){
+    return 'usuarios'
+  }
   static boot () {
     super.boot()
 
@@ -15,8 +18,8 @@ class User extends Model {
      * it to the database.
      */
     this.addHook('beforeSave', async (userInstance) => {
-      if (userInstance.dirty.password) {
-        userInstance.password = await Hash.make(userInstance.password)
+      if (userInstance.dirty.senha) {
+        userInstance.senha = await Hash.make(userInstance.senha)
       }
     })
   }

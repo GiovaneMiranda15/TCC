@@ -1,5 +1,7 @@
 'use strict'
 
+const Usuario = require('../app/Entity/Usuario')
+
 /*
 |--------------------------------------------------------------------------
 | Routes
@@ -19,3 +21,4 @@ const Route = use('Route')
 Route.get('/', () => {
   return { greeting: 'Hello world in JSON' }
 })
+

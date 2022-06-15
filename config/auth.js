@@ -32,7 +32,7 @@ module.exports = {
     model: 'App/Models/User',
     scheme: 'session',
     uid: 'email',
-    password: 'password'
+    password: 'senha'
   },
 
   /*
@@ -70,9 +70,10 @@ module.exports = {
     model: 'App/Models/User',
     scheme: 'jwt',
     uid: 'email',
-    password: 'password',
+    password: 'senha',
     options: {
-      secret: Env.get('APP_KEY')
+      secret: Env.get('APP_KEY'),
+      expiresIn: '8h'
     }
   },
 
