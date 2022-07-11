@@ -1,7 +1,5 @@
 'use strict'
 
-const Usuario = require('../app/Entity/Usuario')
-
 /*
 |--------------------------------------------------------------------------
 | Routes
@@ -22,3 +20,10 @@ Route.get('/', () => {
   return { greeting: 'Hello world in JSON' }
 })
 
+Route.group(()=>{
+  Route.post('/insert', 'ControlleUsuario.insert')
+  Route.post('/update/:id', 'ControlleUsuario.update')
+  Route.post('/delete/:id', 'ControlleUsuario.delete')
+  Route.post('/findAll', 'ControlleUsuario.findAll')
+  Route.post('/findById/:id', 'ControlleUsuario.findById')
+}).prefix('/api/users')

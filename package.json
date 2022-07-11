@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon server.js",
-    "testusuario": "node ./test/ControleUsuarios.test | tap-spec"
+    "testusuario": "node ./test/example.spec.js | tap-spec"
   },
   "keywords": [
     "adonisjs",

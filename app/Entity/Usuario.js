@@ -17,10 +17,10 @@ class Usuario {
     deleted_by;
 
     setId(id) {
-        if(isFinite(id) && id>0){
+        if (isFinite(id) && id > 0) {
             this.id = id;
             return true;
-        }else{
+        } else {
             return false
         }
     }
@@ -30,7 +30,7 @@ class Usuario {
     }
 
     setNome(nome) {
-        if(nome.length>0){
+        if (nome.length > 0) {
             this.nome = nome;
             return true;
         }
@@ -43,14 +43,14 @@ class Usuario {
 
     setCpf(cpf) {
         let valida = /^[0-9]{3}.?[0-9]{3}.?[0-9]{3}-?[0-9]{2}/
-        if(cpf){
-            if(valida.test(cpf)){
+        if (cpf) {
+            if (valida.test(cpf)) {
                 this.cpf = cpf;
                 return true;
-            }else{
+            } else {
                 return false
             }
-        }else{
+        } else {
             return true
         }
     }
@@ -60,8 +60,8 @@ class Usuario {
     }
 
     setEmail(email) {
-        let valida  = /\S+@\S+\.\S+/;
-        if(valida.test(email)){
+        let valida = /\S+@\S+\.\S+/;
+        if (valida.test(email)) {
             this.email = email;
             return true;
         }
@@ -73,10 +73,10 @@ class Usuario {
     }
 
     setSenha(senha) {
-        if(senha.length>0){
+        if (senha.length > 0) {
             this.senha = senha;
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -86,10 +86,10 @@ class Usuario {
     }
 
     setTipo(tipo) {
-        if(tipo===0||tipo===1||tipo===2){
+        if (tipo === 0 || tipo === 1 || tipo === 2) {
             this.tipo = tipo;
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -99,17 +99,17 @@ class Usuario {
     }
 
     setProfissionalId(profissional_id) {
-        if(this.tipo===2){
-            if(isFinite(profissional_id)){
+        if (this.tipo === 2) {
+            if (isFinite(profissional_id)) {
                 this.profissional_id = profissional_id;
                 return true;
-            }else{
+            } else {
                 return false;
             }
-        }else{
+        } else {
             return true;
         }
-        
+
     }
 
     getProfissionalId() {
@@ -141,10 +141,10 @@ class Usuario {
     }
 
     setCreatedBy(created_by) {
-        if(created_by && created_by.length>0){
+        if (created_by && created_by.length > 0) {
             this.created_by = created_by;
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -154,10 +154,10 @@ class Usuario {
     }
 
     setUpdatedBy(updated_by) {
-        if(updated_by && updated_by.length>0){
+        if (updated_by && updated_by.length > 0) {
             this.updated_by = updated_by;
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -167,10 +167,10 @@ class Usuario {
     }
 
     setDeletedBy(deleted_by) {
-        if(deleted_by && deleted_by.length>0){
+        if (deleted_by && deleted_by.length > 0) {
             this.deleted_by = deleted_by;
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -184,6 +184,11 @@ class Usuario {
         return result.rows
     }
 
+    async selectById() {
+        const result = await UsuarioModel.query().where('id', this.id).paginate(1, 50)
+        return result.rows
+    }
+
     async insert() {
         return await UsuarioModel.create({ descricao: this.descricao, created_by: this.created_by })
     }
@@ -192,8 +197,8 @@ class Usuario {
         return Database.table('usuarios').where('id', this.id).update({ descricao: this.descricao, updated_by: this.updated_by }).returning('*');
     }
 
-    async delete(){
-        return Database.table('usuarios').where('id', this.id).update({ deleted_at: moment().utc().local().format() , deleted_by: this.deleted_by }).returning('*');
+    async delete() {
+        return Database.table('usuarios').where('id', this.id).update({ deleted_at: moment().utc().local().format(), deleted_by: this.deleted_by }).returning('*');
     }
 
 }
