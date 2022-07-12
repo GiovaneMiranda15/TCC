@@ -1,17 +1,29 @@
+const ServiceUsuario = require('../../Service/ServiceUsuario')
+
 class ControlleUsuario {
-    insert(request, response) {
-        console.log("Inserir usuarios")
+    constructor() {
+        this.serviceUsuario = new ServiceUsuario()
     }
-    update(request, response) {
-        console.log("Atualizar usuário")
+
+    async insert({ request, response }) {
+        const usuario = request.all()
+        return response.json(await this.serviceUsuario.insert(usuario))
     }
-    delete(request, response) {
-        console.log("Inativa Usuário")
+
+    async update({ request, response, params }) {
+        const usuario = request.all()
+        usuario.id = params.id
+        return response.json(await this.serviceUsuario.update(usuario))
     }
-    findAll(request, response) {
+    async delete({ request, response, params }) {
+        const usuario = request.all()
+        usuario.id = params.id
+        return response.json(await this.serviceUsuario.delete(usuario))
+    }
+    findAll({ request, response }) {
         console.log("Buscar usuários")
     }
-    findById(request, response) {
+    findById({ request, response }) {
         console.log("Buscar usuário por id")
     }
 }

@@ -1,5 +1,6 @@
 "use strict";
 const UsuarioModel = use('App/Models/User')
+const moment = require('moment')
 
 class Usuario {
     id;
@@ -16,8 +17,12 @@ class Usuario {
     deleted_at;
     deleted_by;
 
+    constructor(){
+        this.hash = use('Hash')
+    }
+
     setId(id) {
-        if (isFinite(id) && id > 0) {
+        if (id && isFinite(id) && id > 0) {
             this.id = id;
             return true;
         } else {
@@ -30,7 +35,7 @@ class Usuario {
     }
 
     setNome(nome) {
-        if (nome.length > 0) {
+        if (nome && nome.length > 0) {
             this.nome = nome;
             return true;
         }
@@ -44,7 +49,7 @@ class Usuario {
     setCpf(cpf) {
         let valida = /^[0-9]{3}.?[0-9]{3}.?[0-9]{3}-?[0-9]{2}/
         if (cpf) {
-            if (valida.test(cpf)) {
+            if (valida.test(cpf) && cpf.length == 11) {
                 this.cpf = cpf;
                 return true;
             } else {
@@ -73,7 +78,7 @@ class Usuario {
     }
 
     setSenha(senha) {
-        if (senha.length > 0) {
+        if (senha && senha.length > 0) {
             this.senha = senha;
             return true;
         } else {
@@ -189,16 +194,48 @@ class Usuario {
         return result.rows
     }
 
-    async insert() {
-        return await UsuarioModel.create({ descricao: this.descricao, created_by: this.created_by })
+    async insert(u) {
+        let verify = await UsuarioModel.query().where('email', u.email).paginate(1, 50);
+        if (verify.pages.total > 0) {
+            return false;
+        } else {
+            return await UsuarioModel.create({
+                nome: u.nome,
+                cpf: u.cpf,
+                email: u.email,
+                senha: u.senha,
+                tipo: u.tipo,
+                profissional_id: u.profissional_id,
+                created_by: u.created_by
+            })
+        }
     }
 
-    async update() {
-        return Database.table('usuarios').where('id', this.id).update({ descricao: this.descricao, updated_by: this.updated_by }).returning('*');
+    async update(u) {
+        let verify = await UsuarioModel.query().where('id', u.id).paginate(1, 50);
+        if (verify.pages.total > 0) {
+            return UsuarioModel.query().where('id', u.id).update({
+                nome: u.nome,
+                cpf: u.cpf,
+                email: u.email,
+                senha: await this.hash.make(u.senha),
+                updated_by: u.updated_by
+            })
+        } else {
+            return false;
+        }
     }
 
-    async delete() {
-        return Database.table('usuarios').where('id', this.id).update({ deleted_at: moment().utc().local().format(), deleted_by: this.deleted_by }).returning('*');
+    async delete(u) {
+        let verify = await UsuarioModel.query().where('id', u.id).paginate(1, 50);
+        if (verify.pages.total > 0) {
+            return UsuarioModel.query().where('id', u.id).update({
+                deleted_at: moment(),
+                deleted_by: u.deleted_by
+            })
+        } else {
+            return false;
+        }
     }
 
 }

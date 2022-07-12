@@ -20,7 +20,7 @@ Route.get('/', () => {
   return { greeting: 'Hello world in JSON' }
 })
 
-Route.group(()=>{
+Route.group(() => {
   Route.post('/insert', 'ControlleUsuario.insert')
   Route.post('/update/:id', 'ControlleUsuario.update')
   Route.post('/delete/:id', 'ControlleUsuario.delete')
