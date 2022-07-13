@@ -189,8 +189,13 @@ class Usuario {
         return result.rows
     }
 
-    async selectById() {
-        const result = await UsuarioModel.query().where('id', this.id).paginate(1, 50)
+    async selectById(u) {
+        const result = await UsuarioModel.query().where('id', u.id).paginate(1, 50)
+        return result.rows
+    }
+
+    async selectByEmail(u){
+        const result = await UsuarioModel.query().where('email', u.email).paginate(1,50)
         return result.rows
     }
 

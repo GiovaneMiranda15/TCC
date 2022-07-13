@@ -24,6 +24,7 @@ Route.group(() => {
   Route.post('/insert', 'ControlleUsuario.insert')
   Route.post('/update/:id', 'ControlleUsuario.update')
   Route.post('/delete/:id', 'ControlleUsuario.delete')
+  Route.post('/login', 'ControlleUsuario.login')
   Route.post('/findAll', 'ControlleUsuario.findAll')
   Route.post('/findById/:id', 'ControlleUsuario.findById')
 }).prefix('/api/users')
